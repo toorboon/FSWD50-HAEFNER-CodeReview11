@@ -1,0 +1,74 @@
+html, body {
+  height: 100% !important;
+  width: 100% !important;
+  min-width: 380px;
+  font-size: 3vw !important; }
+
+body {
+  background-image: url("../img/tiles.jpg"); }
+
+.box_window {
+  background-image: url("../img/stone2.jpg"); }
+
+h3 {
+  font-size: 6vw; }
+
+h4 {
+  font-size: 2.5vmax; }
+
+h5 {
+  display: none;
+  margin: 0; }
+
+i {
+  font-size: 2vmax; }
+
+p {
+  font-size: 1.6vmax; }
+
+.content_box {
+  background-color: rgba(255, 255, 255, 0.6) !important; }
+
+#myTabContent img {
+  max-width: 100%;
+  width: 20vw;
+  height: 20vw;
+  display: none; }
+
+hr {
+  width: 100%; }
+
+@media only screen and (min-width: 576px) {
+  p {
+    font-size: 1.5vmax; }
+
+  a {
+    padding: 0 4vw 0 4vw !important; }
+
+  h3 {
+    font-size: 4vmin; }
+
+  h4 {
+    font-size: 2vmax; }
+
+  h5 {
+    font-size: 1.7vmax; }
+
+  i {
+    font-size: 1.7vmax; } }
+@media only screen and (min-width: 991px) {
+  #myTabContent img {
+    max-width: 100%;
+    width: 16vw;
+    height: 14vw; }
+
+  h5 {
+    font-size: 1.1vmax; }
+
+  h4 {
+    font-size: 1.4vmax; }
+
+  p {
+    font-size: 1vmax; } }
+
+/*# sourceMappingURL=index.css.map */
