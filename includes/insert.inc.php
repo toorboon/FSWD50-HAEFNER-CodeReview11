@@ -1,31 +1,8 @@
 <?php 
-	// session_start();
-	// if (!(isset($_SESSION['admin']))){
-	// 	header("Location: ../index.php");
-	// }
-
-/*echo '<br>'.$_POST['category'];
-echo '<br>'.$_POST['name'];
-echo '<br>'.$_POST['id'];
-echo '<br>'.$encoded_image;
-echo print_r($_POST);
-if(isset($_FILES['uploadFile']['name']) && !empty($_FILES['uploadFile']['name'])) {
-			        //Allowed file type
-			        $allowed_extensions = array("jpg","jpeg","png","gif");
-			         //File extension
-			        $ext = strtolower(pathinfo($_FILES['uploadFile']['name'], PATHINFO_EXTENSION));
-			    
-			        //Check extension
-			        if(in_array($ext, $allowed_extensions)) {
-			           //Convert image to base64
-			           $encoded_image = base64_encode(file_get_contents($_FILES['uploadFile']['tmp_name']));
-			           $encoded_image = 'data:image/' . $ext . ';base64,' . $encoded_image;
-			       	}
-			   	}else{
-			   		if(isset($_POST['delete_image'])){
-			   			$encoded_image = '';
-			   		}
-			   	}*/
+	session_start();
+	if (!(isset($_SESSION['admin']))){
+		header("Location: ../index.php");
+	}
 
 		include("dbconnect.inc.php");
 		include("restaurants.inc.php");

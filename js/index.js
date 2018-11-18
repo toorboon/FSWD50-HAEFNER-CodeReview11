@@ -16,7 +16,7 @@ $(document).ready(function(){
 
     //jQuery fetches all the fields from the form and sending it to PHP
     $('#data_form').on('submit', function(e){
-        send_data_to_PHP(e,$('#data_form'));    
+        insert_location(e,$('#data_form'));    
     })
 
     //on button close for the modals reload the page! 
@@ -66,6 +66,25 @@ $(document).ready(function(){
         });
     }); 
 
+    function delete_location(element){
+        element_array = element.split('_');
+        element_category = element_array[0];
+        element_id = element_array[1];
+
+        $.ajax({
+          url:"includes/delete.inc.php",
+          method: "post",
+          data:{'category':element_category, 'id':element_id},
+          dataType:"text",
+          success:function(response)
+            {
+              swal("Well Done!",response,"success");
+              print_result(category, txt);
+              console.log('Record deleted!')
+            }
+        });
+    }
+
     function print_result(category, txt){
             
         $('#result').html('');
@@ -78,11 +97,15 @@ $(document).ready(function(){
 
             {
               $('#result').html(data);
+              //on button delete, deleting the whole card with data in the database
+              $('.delete_button').on('click', function(){
+                delete_location($(this).attr('id'));
+              });
             }
         });
     }
 
-    function send_data_to_PHP(event, form){
+    function insert_location(event, form){
         event.preventDefault();
         $.ajax({
             url:"includes/insert.inc.php",
@@ -93,8 +116,8 @@ $(document).ready(function(){
             success:function(data)
 
             {
-              $('#testing').html(data);
               swal('Well Done!',data,'success');
+              $('#register_form').modal('toggle');
               print_result(category, txt); 
             }
         });

@@ -3,7 +3,7 @@
   <div class="w-100">  
     <div class="d-flex justify-content-between">
       <div class="d-flex">
-      	<a class="navbar-brand text-dark" href="index.php"><i class="fas fa-globe text-dark mx-1"></i>New Travelomatic</a>
+      	<a class="navbar-brand text-dark" href="index.php"><!-- <i class="fas fa-globe text-dark mx-1"></i> -->New Travelomatic</a>
         <!-- Links -->
 <?php
   if (isset($_SESSION['userId'])) {
@@ -42,6 +42,7 @@
   if (isset($_SESSION['userId'])) {
 ?>           
       <div class="d-flex">  
+        <span><?php if (isset($_SESSION['userId']) && (!(isset($_SESSION['admin'])))){echo 'Welcome User';} else if (isset($_SESSION['admin'])){echo 'Welcome Admin';}?></span>
         <button id="logout" class="btn btn-outline-success mx-1" type="submit" name="logout-submit">Logout</button>
       </div>  
 <?php

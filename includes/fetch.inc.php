@@ -1,8 +1,8 @@
 <?php 
-	/*session_start();
+	session_start();
 	if (!(isset($_SESSION['userId']))){
 		header("Location: ../index.php");
-	}	*/
+	}	
 	
 	require("dbconnect.inc.php");
 	include("restaurants.inc.php");
@@ -11,7 +11,6 @@
 	
 	$connection = $connection ?? null;
 		//connect the database
-		//include("dbconnect.php");
 		if ($connection){
 			$conn = $connection->connectDB();
 		} else {
@@ -56,8 +55,8 @@
 		$output = '';
 		if (isset($_SESSION['admin'])) { 
 			
-			$edit_button = '<a id="restaurant_'.$row['id'].'" class="btn btn-success btn-sm d-block">Edit</a>';
-			$delete_button = '<a id="restaurant_'.$row['id'].'" class="btn btn-danger btn-sm d-block">Delete</a>';
+			$edit_button = '<a id="'.$row['category'].'_'.$row['id'].'" class="btn btn-success btn-sm d-block edit_button">Edit</a>';
+			$delete_button = '<a id="'.$row['category'].'_'.$row['id'].'" class="btn btn-danger btn-sm d-block delete_button">Delete</a>';
 		} else {
 			$edit_button = '';
 			$delete_button = '';
