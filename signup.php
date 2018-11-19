@@ -28,7 +28,9 @@
 		 				if (isset($_GET['mail'])){
 		 					$email = $_GET['mail'];
 		 				}
-		 				$category = $_GET['cat'];
+		 				if (isset($_GET['cat'])){
+		 					$category = $_GET['cat'];
+		 				}
 
 		 			} else if ($_GET['error'] == "invalidmailuid"){
 		 				echo "<p class='mx-auto mt-2 text-danger'>E-Mail and Username was wrong!</p>";	
