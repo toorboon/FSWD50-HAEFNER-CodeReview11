@@ -32,20 +32,20 @@ $(document).ready(function(){
     if (($('#category').val()) == ''){
         $('.sight_container,.event_container,.multi_container,.restaurant_container').hide();
     }
-    //LÖSCHEN VOR aBGABE!!!!
+    
     if (($('#category').val()) == 'restaurant'){
             $('.sight_container,.event_container').hide();
         } 
     $('#category').on('change', function(){
-        if (($('#category').val()) == 'restaurant'){
+        if (($('#category').val()) == 'restaurants'){
             $('.sight_container,.event_container').hide();
             $('.restaurant_container').show();
         } 
-        if (($('#category').val()) == 'event'){
+        if (($('#category').val()) == 'events'){
             $('.sight_container,.restaurant_container,.multi_container').hide();
             $('.event_container').show();
         }
-        if (($('#category').val()) == 'sight'){
+        if (($('#category').val()) == 'sights'){
             $('.restaurant_container,.event_container').hide();
             $('.sight_container').show();
         }
@@ -65,6 +65,45 @@ $(document).ready(function(){
           
         });
     }); 
+
+    function edit_location(element){
+        element_array = element.split('_');
+        element_category = element_array[0];
+        element_id = element_array[1];
+        
+        $.ajax({
+          url:"includes/fetch.inc.php",
+          method: "post",
+          data:{'category':element_category, 'id':element_id},
+          dataType:"text",
+          success:function(response)
+            {
+              var obj = jQuery.parseJSON(response);
+              
+              $('#register_form').modal('show');
+              
+              $('input[name="id"]').val(obj.id);
+              $('select[name="category"]').val(obj.category);
+              $('input[name="name"]').val(obj.name);
+              $('#event_picture').attr('src',obj.image);
+              $('input[name="city"]').val(obj.city);
+              $('input[name="zip"]').val(obj.zip);
+              $('input[name="street"]').val(obj.street);
+              $('input[name="phone"]').val(obj.phone);
+              $('select[name="type"]').val(obj.type);
+              $('input[name="description"]').val(obj.description);
+              $('input[name="webpage"]').val(obj.webpage);
+              //only necessary for sights
+              $('select[name="type_sights"]').val(obj.type);
+              $('input[name="visit_date"]').val(obj.description);
+              //only necessary for events
+              $('input[name="date"]').val(obj.start_date);
+              $('input[name="price"]').val(obj.price);
+              $('input[name="location"]').val(obj.location);
+              $('#category').trigger("change");
+            }
+        });
+    }
 
     function delete_location(element){
         element_array = element.split('_');
@@ -100,6 +139,9 @@ $(document).ready(function(){
               //on button delete, deleting the whole card with data in the database
               $('.delete_button').on('click', function(){
                 delete_location($(this).attr('id'));
+              });
+              $('.edit_button').on('click', function(){
+                edit_location($(this).attr('id'));
               });
             }
         });

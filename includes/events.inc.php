@@ -22,7 +22,7 @@ class Event extends Location {
 		$this->image = $image;
 	}
 
-	public static function buildQuery($search){
+	public static function buildQuery($search, $edit_id = ''){
 
 		$sql_select = "
 		SELECT 
@@ -33,15 +33,19 @@ class Event extends Location {
 		    e.category,
 		    e.start_date,
 		    e.location,
-		    e.price	";
+		    e.price,
+		    a.street,
+		    a.zip,
+		    a.city	";
 
 		$sql_select .= "
-			FROM event e
+			FROM events e
 				LEFT JOIN address a
 				ON e.address_id = a.id ";
 
 		$sql_select .= "
-			WHERE (name LIKE '%".$search."%') ";
+			WHERE (name LIKE '%".$search."%')
+				AND e.id LIKE '%".$edit_id."%' ";
 
 		$sql_select .= "
 			ORDER BY name;";
@@ -65,7 +69,7 @@ class Event extends Location {
 				'$this->street');";
 
 		$sql_insert_event = "
-			INSERT INTO event (
+			INSERT INTO events (
 				name,
 				address_id,
 				start_date,
@@ -86,6 +90,45 @@ class Event extends Location {
 				'$this->loc_type');";
 
 		return array($sql_insert_address, $sql_insert_event);
+	}
+
+	public function build_update_query($row_id){
+
+		if ($this->image) {
+			$image = "image = '$this->image',";
+		} else {
+			$image = '';
+		}
+
+		//query for writing into the database
+		$sql_update_address = "
+			UPDATE address ";
+
+		$sql_update_address .= "
+			SET city = '$this->city', 
+				zip = '$this->zip',
+				street = '$this->street' ";
+
+		$sql_update_address .= "
+			WHERE id in (SELECT address_id 
+								 FROM events
+								 WHERE id = ".$row_id.");";
+
+		$sql_update_event = "
+			UPDATE events ";
+
+		$sql_update_event .= "
+			SET name = '$this->name',
+				start_date = '$this->event_date',
+				price = '$this->price',
+				location = '$this->location',
+			    ".$image."
+			    category = '$this->loc_type' ";
+
+		$sql_update_event .= "
+			WHERE id = ".$row_id.";";
+
+		return array($sql_update_address, $sql_update_event);
 	}
 }
 

@@ -23,7 +23,7 @@ class Sight extends Location {
 		$this->image = $image;
 	}
 
-	public static function buildQuery($search){
+	public static function buildQuery($search, $edit_id = ''){
 
 		$sql_select = "
 		SELECT 
@@ -34,15 +34,19 @@ class Sight extends Location {
 		    s.category,
 		    s.type,
 		    s.description,
-		    s.webpage ";
+		    s.webpage,
+		    a.street,
+		    a.zip,
+		    a.city ";
 
 		$sql_select .= "
-			FROM sight s
+			FROM sights s
 				LEFT JOIN address a
 				ON s.address_id = a.id ";
 
 		$sql_select .= "
-			WHERE (name LIKE '%".$search."%') ";
+			WHERE (name LIKE '%".$search."%')
+				AND s.id LIKE '%".$edit_id."%' ";
 
 		$sql_select .= "
 			ORDER BY name;";
@@ -66,7 +70,7 @@ class Sight extends Location {
 				'$this->street');";
 
 		$sql_insert_sight = "
-			INSERT INTO sight (
+			INSERT INTO sights (
 				name,
 				address_id,
 				visit_date,
@@ -89,6 +93,46 @@ class Sight extends Location {
 				'$this->description');";
 
 		return array($sql_insert_address, $sql_insert_sight);
+	}
+
+	public function build_update_query($row_id){
+
+		if ($this->image) {
+			$image = "image = '$this->image',";
+		} else {
+			$image = '';
+		}
+
+		//query for writing into the database
+		$sql_update_address = "
+			UPDATE address ";
+
+		$sql_update_address .= "
+			SET city = '$this->city', 
+				zip = '$this->zip',
+				street = '$this->street' ";
+
+		$sql_update_address .= "
+			WHERE id in (SELECT address_id 
+								 FROM sights
+								 WHERE id = ".$row_id.");";
+
+		$sql_update_sight = "
+			UPDATE sights ";
+
+		$sql_update_sight .= "
+			SET name = '$this->name',
+				visit_date = '$this->visited',
+				type = '$this->type',
+			    description = '$this->description',
+			    webpage = '$this->webpage',
+			    ".$image."
+			    category = '$this->loc_type' ";
+
+		$sql_update_sight .= "
+			WHERE id = ".$row_id.";";
+
+		return array($sql_update_address, $sql_update_sight);
 	}
 }
 /*$test = new Sight('1','2','3','4','5','6','7','8');

@@ -11,20 +11,21 @@
 
 		if(isset($_POST["category"])){
 				
-			$location_id = $_POST["id"];
-			$category = $_POST["category"];
-			$name = $_POST["name"];
-			$city = $_POST["city"];
-			$zip = $_POST["zip"];
-			$street = $_POST["street"];
-			$phone = $_POST["phone"];
-			$type = $_POST["type"];
-			$description = $_POST["description"];
-			$webpage = $_POST["webpage"];
-			$date = $_POST["date"];
-			$price = $_POST["price"];
-			$location = $_POST["location"];
-			$visited = $_POST['visit_date'];
+			$location_id = $_POST["id"] ?? NULL;
+			$category = $_POST["category"] ?? NULL;
+			$name = $_POST["name"] ?? NULL;
+			$city = $_POST["city"] ?? NULL;
+			$zip = $_POST["zip"] ?? NULL;
+			$street = $_POST["street"] ?? NULL;
+			$phone = $_POST["phone"] ?? NULL;
+			$type = $_POST["type"] ?? NULL;
+			$description = $_POST["description"] ?? NULL;
+			$webpage = $_POST["webpage"] ?? NULL;
+			$type_sights = $_POST['type_sights'] ?? NULL;
+			$date = $_POST["date"] ?? NULL;
+			$price = $_POST["price"] ?? NULL;
+			$location = $_POST["location"] ?? NULL;
+			$visited = $_POST['visit_date'] ?? NULL;
 			
 			if(isset($_FILES['uploadFile']['name']) && !empty($_FILES['uploadFile']['name'])) {
 		        //Allowed file type
@@ -39,12 +40,12 @@
 		           $encoded_image = 'data:image/' . $ext . ';base64,' . $encoded_image;
 		       	}
 		   	}else{
-		   		//if(isset($_POST['delete_image'])){
-		   			$encoded_image = '';
-		   		//}
+		   		if($_POST['delete_image'] == 'on') {
+		   			$encoded_image = 'delete';
+		   		}
 		   	}
 		   	
-		   	if ($category == 'restaurant'){
+		   	if ($category == 'restaurants'){
 		   		$newRestaurant = new Restaurant(
 		   			$phone,
 		   			$webpage,
@@ -62,14 +63,14 @@
 					$sql_return = $newRestaurant->build_insert_query();
 
 				} else {
-					$newRestaurant->update_Database();
+					$sql_return = $newRestaurant->build_update_query($location_id);
 				}
 		   		
-		   	} else if ($category == 'sight') {
+		   	} else if ($category == 'sights') {
 		   		//put object instantiation for sights
 		   		$newSight = new Sight(
 		   			$visited,
-		   			$type,
+		   			$type_sights,
 		   			$description,
 		   			$webpage,
 		   			$location_id,
@@ -84,10 +85,10 @@
 					$sql_return = $newSight->build_insert_query();
 				
 				} else {
-					$newSight->update_Database();
+					$sql_return = $newSight->build_update_query($location_id);
 				}
 			   			
-		   	} else if ($category == 'event') {
+		   	} else if ($category == 'events') {
 		   		//put object instantiation for events
 		   		$newEvent = new Event(
 		   			$date,
@@ -105,15 +106,18 @@
 					$sql_return = $newEvent->build_insert_query();
 				
 				} else {
-					$newEvent->update_Database();
+					$sql_return = $newEvent->build_update_query($location_id);
 				}
 
 		   	} else {
-		   		echo "Something is wrong with the categories!";
+		   		echo "Something is wrong with the categories!"; //this should never occur! If so, something needs to be checked with the parameter 'category'
 		   	}
-		//print_r($newRestaurant);	
+		//print_r($newRestaurant);
+
 		$sql_insert_address = $sql_return[0];
 		$sql_insert_category = $sql_return[1];
+		// echo ($sql_insert_address);
+		// echo ($sql_insert_category);
 		$result_message = insert_into_database($sql_insert_address, $sql_insert_category, $category);
 		//echo $sql_insert_category;
 		echo $result_message;
@@ -135,15 +139,15 @@ function insert_into_database($sql_insert_address, $sql_insert_category, $catego
 	$result_message = '';
 	if ($conn->query($sql_insert_address) === TRUE) {
 	    $last_address_id = $conn->insert_id;
-	    $result_message .= 'New address created successfully. '; 
+	    $result_message .= 'Address inserted successfully. '; 
 	} else {
-			$result_message .= 'SQL insert error for address! ';
+			$result_message .= 'SQL insert/update error for address! ';
 	}
 
 	if ($conn->query($sql_insert_category) === TRUE) {
-		    $result_message .= 'New '.$category.' created successfully. '; 
+		    $result_message .= 'Information in table '.$category.' successfully written.'; 
 	} else {
-			$result_message .= 'SQL insert error for '.$category.'! ';
+			$result_message .= 'SQL insert/update error for '.$category.'! ';
 	}
 	
 	//close connection

@@ -1,7 +1,6 @@
 
-<div class="row-fluid">
-	<div id="result" class="card-columns mt-3">
-		
-	</div>
+<div id="result" class="row p-2">
+
+	
 		
 </div>

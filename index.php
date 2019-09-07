@@ -30,6 +30,8 @@
         <p class="lead">This is a simple blog, where you can drop your travel information</p>
         <hr class="my-4">
         <p>Sign up, if you dare</p>
+        <p>User-Login: marcouser pw: test</p>
+        <p>Admin-Login: marco pw: test</p>
         <button class="btn btn-info" type="button" data-toggle="modal" data-target="#signup_user">Signup</button>
       </div>
     </div>

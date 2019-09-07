@@ -2,27 +2,26 @@
 <nav class="sticky-top navbar bg-site-greennav ">
   <div class="w-100">  
     <div class="d-flex justify-content-between">
+      
       <div class="d-flex">
+
       	<a class="navbar-brand text-dark" href="index.php"><!-- <i class="fas fa-globe text-dark mx-1"></i> -->New Travelomatic</a>
         <!-- Links -->
 <?php
   if (isset($_SESSION['userId'])) {
 ?>        
-        <ul class="navbar-nav d-inline">
-          <!-- Dropdown -->
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle text-dark" href="#" id="navbardrop" data-toggle="dropdown">
-              Filter
-            </a>
-            <div class="dropdown-menu">
-              <a class="dropdown-item" href="restaurants.php">Restaurants</a>
-              <a class="dropdown-item" href="events.php">Events</a>
-              <a class="dropdown-item" href="sights.php">Sights</a>
-              <?php if (isset($_SESSION['admin'])) { echo '<a class="dropdown-item" id="register_button"   data-toggle="modal" data-target="#register_form">New Location</a>';} ?>
-            </div>
-            
-          </li>
-        </ul>
+        <!-- Dropdown -->
+        <div class="dropdown">
+          <a href="#" id="navbardrop" class="nav-link dropdown-toggle text-dark" data-toggle="dropdown">
+            Filter
+          </a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="restaurants.php">Restaurants</a>
+            <a class="dropdown-item" href="events.php">Events</a>
+            <a class="dropdown-item" href="sights.php">Sights</a>
+            <?php if (isset($_SESSION['admin'])) { echo '<a class="dropdown-item" id="register_button"   data-toggle="modal" data-target="#register_form">New Location</a>';} ?>
+          </div>
+        </div>     
 <?php
   }
 ?>  

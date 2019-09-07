@@ -21,10 +21,10 @@ class Restaurant extends Location {
 		$this->zip = $zip;
 		$this->street = $street;
 		$this->image = $image;
-		
+		 
 	}
 
-	public static function buildQuery($search){
+	public static function buildQuery($search, $edit_id = ''){
 
 		$sql_select = "
 		SELECT 
@@ -36,15 +36,19 @@ class Restaurant extends Location {
 		    r.type,
 		    r.description,
 		    r.webpage,
-		    r.phone ";
+		    r.phone,
+		    a.street,
+		    a.zip,
+		    a.city ";
 
 		$sql_select .= "
-			FROM restaurant r
+			FROM restaurants r
 				LEFT JOIN address a
 				ON r.address_id = a.id ";
 
 		$sql_select .= "
-			WHERE (r.name LIKE '%".$search."%') ";
+			WHERE (r.name LIKE '%".$search."%') 
+				AND r.id LIKE '%".$edit_id."%' ";
 
 		$sql_select .= "
 			ORDER BY r.name;";
@@ -72,7 +76,7 @@ class Restaurant extends Location {
 		
 
 		$sql_insert_restaurant = "
-			INSERT INTO restaurant (
+			INSERT INTO restaurants (
 				name,
 				phone,
 				type,
@@ -97,8 +101,49 @@ class Restaurant extends Location {
 		
 		return array($sql_insert_address, $sql_insert_restaurant);
 	}
+
+	public function build_update_query($row_id){
+
+		if ($this->image && $this->image != 'delete') {
+			$image = "image = '$this->image',";
+		} else if ($this->image == 'delete') {
+			$image = "image = NULL,";
+		} else {
+			$image = '';
+		}
+
+		//query for writing into the database
+		$sql_update_address = "
+			UPDATE address ";
+
+		$sql_update_address .= "
+			SET city = '$this->city', 
+				zip = '$this->zip',
+				street = '$this->street' ";
+
+		$sql_update_address .= "
+			WHERE id in (SELECT address_id 
+								 FROM restaurants
+								 WHERE id = ".$row_id.");";
+
+		$sql_update_restaurant = "
+			UPDATE restaurants ";
+
+		$sql_update_restaurant .= "
+			SET name = '$this->name',
+				phone = '$this->phone',
+				type = '$this->type',
+			    description = '$this->description',
+			    webpage = '$this->webpage',
+			    ".$image."
+			    category = '$this->loc_type' ";
+
+		$sql_update_restaurant .= "
+			WHERE id = ".$row_id.";";
+
+		return array($sql_update_address, $sql_update_restaurant);
+	}
 }
-/*$test = new Restaurant('phone?','webpage?','loc_type','test','test','test','test','test');
-print_r($test);*/
+
 ?>	
 
