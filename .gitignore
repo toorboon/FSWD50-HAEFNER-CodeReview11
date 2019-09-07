@@ -1,0 +1,5 @@
+/database
+/bootstrap
+/jquery
+/popper
+/includes/dbconnect.inc.php
