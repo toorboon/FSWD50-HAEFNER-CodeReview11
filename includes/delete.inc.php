@@ -6,7 +6,7 @@ if (!(isset($_SESSION['admin']))){
 
 include("dbconnect.inc.php");
 	
-$category = $_POST['category'];
+$category = $_POST['category']; 
 $id = $_POST['id'];
 $sql_delete = build_delete_query($category, $id);
 
@@ -26,6 +26,7 @@ if ($conn->query($sql_delete) === TRUE) {
 	$result_message .= $category.' successfully deleted! '; 
 } else {
 	$result_message .= 'SQL delete error for '.$category.'! ';
+	$result_message .= $sql_delete;
 }
 
 echo $result_message;
@@ -34,16 +35,18 @@ echo $result_message;
 mysqli_close($conn);
 
 function build_delete_query($category, $id) {
+		$category = 'travelomatic_'.$category; //this was necessary due to restructering of database
+		
 		$sql_delete = "
-			DELETE ".$category.", address ";
+			DELETE ".$category.", travelomatic_address ";
 			
 
 		$sql_delete .= "
 			FROM ".$category." ";
 
 		$sql_delete .= "
-			LEFT JOIN address
-			ON address.id = ".$category.".address_id ";
+			LEFT JOIN travelomatic_address
+			ON travelomatic_address.id = ".$category.".address_id ";
 
 		$sql_delete .= "
 			WHERE ".$category.".id = ".$id.";";

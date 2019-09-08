@@ -39,8 +39,8 @@ class Event extends Location {
 		    a.city	";
 
 		$sql_select .= "
-			FROM events e
-				LEFT JOIN address a
+			FROM travelomatic_events e
+				LEFT JOIN travelomatic_address a
 				ON e.address_id = a.id ";
 
 		$sql_select .= "
@@ -57,7 +57,7 @@ class Event extends Location {
 
 		//query for writing into the database
 		$sql_insert_address = "
-			INSERT INTO address (
+			INSERT INTO travelomatic_address (
 				city,
 				zip,
 				street) ";
@@ -69,7 +69,7 @@ class Event extends Location {
 				'$this->street');";
 
 		$sql_insert_event = "
-			INSERT INTO events (
+			INSERT INTO travelomatic_events (
 				name,
 				address_id,
 				start_date,
@@ -78,7 +78,7 @@ class Event extends Location {
 			    image,
 			    category) ";
 
-		//in the future it could be a nice idea to make a lockup for the address_id, if already existing already in the form!
+		//in the future it could be a nice idea to make a lockup for the address_id, if existing already in the form!
 		$sql_insert_event .= "
 			VALUES (
 				'$this->name',
@@ -102,7 +102,7 @@ class Event extends Location {
 
 		//query for writing into the database
 		$sql_update_address = "
-			UPDATE address ";
+			UPDATE travelomatic_address ";
 
 		$sql_update_address .= "
 			SET city = '$this->city', 
@@ -111,11 +111,11 @@ class Event extends Location {
 
 		$sql_update_address .= "
 			WHERE id in (SELECT address_id 
-								 FROM events
+								 FROM travelomatic_events
 								 WHERE id = ".$row_id.");";
 
 		$sql_update_event = "
-			UPDATE events ";
+			UPDATE travelomatic_events ";
 
 		$sql_update_event .= "
 			SET name = '$this->name',

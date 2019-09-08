@@ -26,7 +26,7 @@ if (isset($_POST['login-submit'])) {
 		exit();
 	
 	} else {
-		$sql = "SELECT * FROM users WHERE uidUsers=? OR emailUsers=?;"; //again uses prepared statemens
+		$sql = "SELECT * FROM travelomatic_users WHERE uidUsers=? OR emailUsers=?;"; //again uses prepared statemens
 		$stmt = mysqli_stmt_init($conn);
 		if (!mysqli_stmt_prepare($stmt, $sql)) {
 			header("Location: ../index.php?error=sqlerror&uid=".$mailuid);

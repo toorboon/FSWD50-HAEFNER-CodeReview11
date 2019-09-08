@@ -40,8 +40,8 @@ class Sight extends Location {
 		    a.city ";
 
 		$sql_select .= "
-			FROM sights s
-				LEFT JOIN address a
+			FROM travelomatic_sights s
+				LEFT JOIN travelomatic_address a
 				ON s.address_id = a.id ";
 
 		$sql_select .= "
@@ -58,7 +58,7 @@ class Sight extends Location {
 
 		//query for writing into the database
 		$sql_insert_address = "
-			INSERT INTO address (
+			INSERT INTO travelomatic_address (
 				city,
 				zip,
 				street) ";
@@ -70,7 +70,7 @@ class Sight extends Location {
 				'$this->street');";
 
 		$sql_insert_sight = "
-			INSERT INTO sights (
+			INSERT INTO travelomatic_sights (
 				name,
 				address_id,
 				visit_date,
@@ -105,7 +105,7 @@ class Sight extends Location {
 
 		//query for writing into the database
 		$sql_update_address = "
-			UPDATE address ";
+			UPDATE travelomatic_address ";
 
 		$sql_update_address .= "
 			SET city = '$this->city', 
@@ -114,11 +114,11 @@ class Sight extends Location {
 
 		$sql_update_address .= "
 			WHERE id in (SELECT address_id 
-								 FROM sights
+								 FROM travelomatic_sights
 								 WHERE id = ".$row_id.");";
 
 		$sql_update_sight = "
-			UPDATE sights ";
+			UPDATE travelomatic_sights ";
 
 		$sql_update_sight .= "
 			SET name = '$this->name',

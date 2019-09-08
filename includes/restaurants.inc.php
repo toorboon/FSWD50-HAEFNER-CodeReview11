@@ -42,8 +42,8 @@ class Restaurant extends Location {
 		    a.city ";
 
 		$sql_select .= "
-			FROM restaurants r
-				LEFT JOIN address a
+			FROM travelomatic_restaurants r
+				LEFT JOIN travelomatic_address a
 				ON r.address_id = a.id ";
 
 		$sql_select .= "
@@ -62,7 +62,7 @@ class Restaurant extends Location {
 
 		//query for writing into the database
 		$sql_insert_address = "
-			INSERT INTO address (
+			INSERT INTO travelomatic_address (
 				city,
 				zip,
 				street) ";
@@ -76,7 +76,7 @@ class Restaurant extends Location {
 		
 
 		$sql_insert_restaurant = "
-			INSERT INTO restaurants (
+			INSERT INTO travelomatic_restaurants (
 				name,
 				phone,
 				type,
@@ -114,7 +114,7 @@ class Restaurant extends Location {
 
 		//query for writing into the database
 		$sql_update_address = "
-			UPDATE address ";
+			UPDATE travelomatic_address ";
 
 		$sql_update_address .= "
 			SET city = '$this->city', 
@@ -123,11 +123,11 @@ class Restaurant extends Location {
 
 		$sql_update_address .= "
 			WHERE id in (SELECT address_id 
-								 FROM restaurants
+								 FROM travelomatic_restaurants
 								 WHERE id = ".$row_id.");";
 
 		$sql_update_restaurant = "
-			UPDATE restaurants ";
+			UPDATE travelomatic_restaurants ";
 
 		$sql_update_restaurant .= "
 			SET name = '$this->name',

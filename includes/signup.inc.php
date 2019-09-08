@@ -44,7 +44,7 @@ if(isset($_POST['signup-submit'])){
 		exit();
 
 	} else {
-		$sql = "SELECT uidUsers FROM users WHERE uidUsers=?"; //placeholder for executing safe queries
+		$sql = "SELECT uidUsers FROM travelomatic_users WHERE uidUsers=?"; //placeholder for executing safe queries
 		$stmt = mysqli_stmt_init($conn);
 		if (!mysqli_stmt_prepare($stmt, $sql)) {
 			header("Location: ../index.php?error=sqlerror");
@@ -59,7 +59,7 @@ if(isset($_POST['signup-submit'])){
 				header("Location: ../index.php?error=usertaken&mail=".$email."&cat=".$category);
 			exit();
 			} else {
-				$sql = "INSERT INTO users (uidUsers, emailUsers, pwdUsers,category) VALUES (?,?,?,?)"; //Placeholders put for safer inserts
+				$sql = "INSERT INTO travelomatic_users (uidUsers, emailUsers, pwdUsers,category) VALUES (?,?,?,?)"; //Placeholders put for safer inserts
 				$stmt = mysqli_stmt_init($conn);
 				if (!mysqli_stmt_prepare($stmt, $sql)) {
 					header("Location: ../index.php?error=sqlerror");
